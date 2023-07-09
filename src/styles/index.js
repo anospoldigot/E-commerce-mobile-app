@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     flex: 1,
+    color: '#000000'
   },
 
   btnPrimary: {

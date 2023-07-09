@@ -17,13 +17,21 @@ import {PrimaryColor, SecondaryColor} from '../styles/theme';
 
 import {faUser, faLock} from '@fortawesome/free-solid-svg-icons';
 import Svg, {Path} from 'react-native-svg';
-
+import axios from 'axios';
+import { BASE_URL } from '../store/url';
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  
   const onSubmit = async () => {
-    AuthStore.login({email: email, password: password});
+    try{
+      axios.defaults.baseURL = BASE_URL;
+      const response = await axios.post('login', {email: email, password: password});
+      AuthStore.login({user: response.data.data, token: response.data.token});
+    }catch(err){
+      console.log(err)
+      // ToastAndroid.show(err.response.data.errors.username[0], ToastAndroid.SHORT);
+    }
   };
 
   return (

@@ -195,8 +195,8 @@ export const Navigator = observer(() => {
               screenOptions={{
                 headerShown: false,
               }}
-              initialRouteName="Onboarding">
-              <Stack.Screen name="Onboarding" component={Tutorial} />
+              initialRouteName="login">
+              {/* <Stack.Screen name="Onboarding" component={Tutorial} /> */}
               <Stack.Screen name="signup" component={Signup} />
               <Stack.Screen name="login" component={Login} />
             </Stack.Navigator>

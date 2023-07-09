@@ -9,6 +9,7 @@ import {categories} from '../data/categories';
 import {products} from '../data/products';
 import {cart} from '../data/cart';
 import {wishlist} from '../data/wishlist';
+import api from '../utils/api';
 
 class Product {
   state = {
@@ -18,8 +19,8 @@ class Product {
     product: {},
     categories: [],
     category: null,
-    cart: cart,
-    wishlist: wishlist,
+    cart: [],
+    wishlist: [],
   };
 
   constructor() {
@@ -33,10 +34,11 @@ class Product {
       addToCart: action,
       addToWishlist: action,
       removeFromWishlist: action,
-
       setCategory: action,
       setProduct: action,
     });
+
+    this.initializeState();
   }
 
   createToast = message => {
@@ -47,6 +49,19 @@ class Product {
       0,
       50,
     );
+  };
+
+  initializeState = async () => {
+    try {
+      const cart = await api.get('/carts');
+      this.state.cart = cart.data.data;
+      const product = await api.get('/products');
+      this.state.products = product.data.data;
+      const wishlist = await api.get('/wishlists');
+      this.state.wishlist = wishlist.data.data;
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   shuffle = a => {

@@ -8,6 +8,7 @@ class Auth {
   state = {
     isAuthenticated: false,
     user: null,
+    token: null
   };
 
   constructor() {
@@ -31,6 +32,8 @@ class Auth {
 
   login = async data => {
     try {
+      this.user   = data.user;
+      this.token  = data.token;
       this.state.isAuthenticated = true;
       this.createToast('Logged in successfully');
     } catch (err) {

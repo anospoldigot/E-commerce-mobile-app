@@ -20,6 +20,8 @@ import {
 import {ProductStore} from '../store/product';
 import {observer} from 'mobx-react';
 import styles from '../styles';
+import { numberFormat } from '../utils/currency';
+import { BASE_URL_ASSET } from '../store/url';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -42,7 +44,7 @@ export const Product = observer(() => {
       <Image
         style={{height: 400, borderBottomLeftRadius: 50}}
         source={{
-          uri: item,
+          uri: BASE_URL_ASSET + item.filename,
         }}
       />
     );
@@ -51,7 +53,7 @@ export const Product = observer(() => {
   const PaginationView = () => {
     return (
       <Pagination
-        dotsLength={product.imgs.length}
+        dotsLength={product.assets.length}
         activeDotIndex={activeSlide}
         containerStyle={{marginTop: -50}}
         dotStyle={{
@@ -78,7 +80,7 @@ export const Product = observer(() => {
         {/* <Header heading="Product" /> */}
 
         <Carousel
-          data={product.imgs}
+          data={product.assets}
           renderItem={renderItem}
           sliderWidth={screenWidth}
           sliderHeight={screenWidth}
@@ -98,7 +100,7 @@ export const Product = observer(() => {
             borderWidth: 1,
             borderColor: '#ccc',
             borderRadius: 50,
-            top: product.imgs.length > 1 ? -50 : -20,
+            top: product.assets.length > 1 ? -50 : -20,
             left: 280,
             justifyContent: 'center',
             alignItems: 'center',
@@ -124,7 +126,7 @@ export const Product = observer(() => {
               </Text>
             </View>
             <Text style={{fontFamily: 'Poppins-Light', alignSelf: 'flex-end'}}>
-              ${product.price}
+              Rp. {numberFormat(product.real_price)}
             </Text>
           </View>
           <Text style={{fontFamily: 'Poppins-Light', paddingBottom: 100}}>

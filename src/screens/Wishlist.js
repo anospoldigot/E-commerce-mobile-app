@@ -17,6 +17,8 @@ import {faTrashCan} from '@fortawesome/free-regular-svg-icons';
 
 import {Header} from '../components/Header';
 import styles from '../styles';
+import { numberFormat } from '../utils/currency';
+import { BASE_URL_ASSET } from '../store/url';
 
 export const Wishlist = observer(({navigation}) => {
   const {
@@ -94,7 +96,7 @@ const Item = ({product, navigation}) => {
         <Image
           style={{width: 100, height: 150, borderRadius: 5}}
           source={{
-            uri: product.imgs[0],
+            uri: BASE_URL_ASSET + product.assets[0].filename,
           }}
         />
       </Pressable>
@@ -104,8 +106,8 @@ const Item = ({product, navigation}) => {
           justifyContent: 'space-between',
         }}>
         <View>
-          <Text style={styles.wishlistName}>{product.name}</Text>
-          <Text style={styles.wishlistPrice}>${product.price}</Text>
+          <Text style={styles.wishlistName}>{product.title}</Text>
+          <Text style={styles.wishlistPrice}>Rp. {numberFormat(product.real_price)}</Text>
         </View>
 
         <TouchableOpacity

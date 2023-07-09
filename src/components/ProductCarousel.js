@@ -15,20 +15,21 @@ import {
 
 import {observer} from 'mobx-react';
 import {ProductStore} from '../store/product';
+import { BASE_URL_ASSET } from '../store/url';
+import { numberFormat } from '../utils/currency';
 
 const {width: screenWidth} = Dimensions.get('window');
 
 export const ProductCarousel = observer(({navigation}) => {
   const {
     state: {products},
-    getProducts,
     setProduct,
   } = ProductStore;
 
   const carouselRef = useRef(null);
 
   useEffect(() => {
-    getProducts();
+    console.log('ini products', products);
   }, []);
 
   const renderItem = ({item}, parallaxProps) => {
@@ -40,7 +41,7 @@ export const ProductCarousel = observer(({navigation}) => {
         }}
         style={styles.item}>
         <ParallaxImage
-          source={{uri: item.imgs[0]}}
+          source={{uri: BASE_URL_ASSET + item.assets[0].filename}}
           containerStyle={styles.imageContainer}
           style={styles.image}
           parallaxFactor={0.4}
@@ -49,14 +50,14 @@ export const ProductCarousel = observer(({navigation}) => {
 
         <View style={styles.details}>
           <View>
-            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.name}>{item.title}</Text>
             <Text style={styles.description}>
               {item.description.slice(0, 200)}...
             </Text>
           </View>
 
           <View style={styles.price}>
-            <Text style={{fontSize: 16}}>${item.price}</Text>
+            <Text style={{fontSize: 16}}>Rp. {numberFormat(item.real_price)}</Text>
           </View>
         </View>
       </Pressable>
@@ -74,6 +75,7 @@ export const ProductCarousel = observer(({navigation}) => {
         renderItem={renderItem}
         hasParallaxImages={true}
       />
+      {/* <Text>{'haii'}</Text> */}
     </View>
   );
 });

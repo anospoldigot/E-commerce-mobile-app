@@ -17,11 +17,16 @@ import {faTrashCan} from '@fortawesome/free-regular-svg-icons';
 
 import {Header} from '../components/Header';
 import styles from '../styles';
+import axios from 'axios';
+import api from '../utils/api';
+import { BASE_URL_ASSET } from '../store/url';
+import { numberFormat } from '../utils/currency';
 
 export const Cart = observer(({navigation}) => {
   const {
     state: {cart},
   } = ProductStore;
+
 
   return (
     <View style={{flex: 1}}>
@@ -30,8 +35,8 @@ export const Cart = observer(({navigation}) => {
       {cart.length > 0 ? (
         <>
           <ScrollView>
-            {cart.map((x, i) => (
-              <Item key={i} item={x} navigation={navigation} />
+            {cart.map((item, i) => (
+              <Item key={i} item={item} navigation={navigation} />
             ))}
             <View style={{height: 80}}></View>
           </ScrollView>
@@ -91,28 +96,28 @@ export const Cart = observer(({navigation}) => {
   );
 });
 
-const Item = ({item: {product, quantity}, navigation}) => {
+const Item = ({item, navigation}) => {
   const {updateCartQuantity, setProduct} = ProductStore;
-
+  console.log(item)
   return (
     <View style={styles.cartItem}>
       <Pressable
         onPress={() => {
-          setProduct(product);
+          setProduct(item.product);
           navigation.navigate('Product');
         }}>
         <Image
           style={{width: 100, height: 150, borderRadius: 5}}
           source={{
-            uri: product.imgs[0],
+            uri: BASE_URL_ASSET + item.product.assets[0].filename
           }}
         />
       </Pressable>
       <View style={{flex: 1}}>
-        <Text style={styles.cartName}>{product.name}</Text>
+        <Text style={styles.cartName}>{item.product.name}</Text>
 
         <Text style={styles.cartPrice}>
-          ${product.price * quantity ? product.price * quantity : ''}
+          Rp. {item.product.price * item.quantity ? numberFormat(item.product.price * item.quantity) : ''}
         </Text>
       </View>
 
@@ -123,7 +128,7 @@ const Item = ({item: {product, quantity}, navigation}) => {
             height: 20,
           }}
           onPress={() => {
-            updateCartQuantity(product.id, quantity + 1);
+            updateCartQuantity(item.product.id, item.quantity + 1);
           }}>
           <FontAwesomeIcon icon={faPlus} />
         </Pressable>
@@ -134,7 +139,7 @@ const Item = ({item: {product, quantity}, navigation}) => {
             marginTop: -5,
             marginHorizontal: 10,
           }}>
-          {quantity}
+          {item.quantity}
         </Text>
         <Pressable
           style={{
@@ -142,9 +147,9 @@ const Item = ({item: {product, quantity}, navigation}) => {
             height: 20,
           }}
           onPress={() => {
-            updateCartQuantity(product.id, quantity - 1);
+            updateCartQuantity(item.product.id, item.quantity - 1);
           }}>
-          {quantity === 1 ? (
+          {item.quantity === 1 ? (
             <FontAwesomeIcon color="red" icon={faTrashCan} />
           ) : (
             <FontAwesomeIcon icon={faMinus} />
