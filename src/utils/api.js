@@ -3,7 +3,7 @@ import { AuthStore } from '../store/auth';
 
 // Membuat instance Axios
 const api = axios.create({
-    baseURL: 'https://53c6-116-206-9-27.ngrok-free.app/api',
+    baseURL: 'https://1eca-116-206-9-60.ngrok-free.app/api',
 });
 
 // Interceptor untuk penanganan kesalahan (error handling)

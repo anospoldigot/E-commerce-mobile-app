@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
 
   primaryBtn: {
     backgroundColor: PrimaryColor,
-    padding: 15,
+    padding: 10,
     width: 200,
     alignItems: 'center',
     alignSelf: 'center',

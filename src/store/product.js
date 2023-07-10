@@ -36,8 +36,11 @@ class Product {
       removeFromWishlist: action,
       setCategory: action,
       setProduct: action,
+      initializeState: action,
+      setCheckedCart: action,
+      getCheckedCart: action,
     });
-
+    
     this.initializeState();
   }
 
@@ -54,7 +57,10 @@ class Product {
   initializeState = async () => {
     try {
       const cart = await api.get('/carts');
-      this.state.cart = cart.data.data;
+      this.state.cart = cart.data.data.map(value =>{
+        value.isChecked = false;
+        return value;
+      });
       const product = await api.get('/products');
       this.state.products = product.data.data;
       const wishlist = await api.get('/wishlists');
@@ -113,6 +119,18 @@ class Product {
   setProduct = data => {
     this.state.product = data;
   };
+
+  setCheckedCart = id => {
+    this.state.cart = this.state.cart.map(value => {
+      if(value.id == id) value.isChecked = !value.isChecked;
+
+      return value;
+    })
+  }
+
+  getCheckedCart = id => {
+    return this.state.cart.filter(value => value.isChecked)
+  }
 
   addToCart = product => {
     if (this.state.cart.find(x => x.product.id === product.id)) {

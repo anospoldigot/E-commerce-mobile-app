@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   ScrollView,
@@ -8,28 +8,30 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {ProductStore} from '../store/product';
-import {observer} from 'mobx-react';
+import { ProductStore } from '../store/product';
+import { observer } from 'mobx-react';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faPlus, faMinus} from '@fortawesome/free-solid-svg-icons';
-import {faTrashCan} from '@fortawesome/free-regular-svg-icons';
-
-import {Header} from '../components/Header';
+import { Header } from '../components/Header';
 import styles from '../styles';
-import axios from 'axios';
-import api from '../utils/api';
 import { BASE_URL_ASSET } from '../store/url';
 import { numberFormat } from '../utils/currency';
+import { CheckBox } from '@rneui/themed';
 
-export const Cart = observer(({navigation}) => {
+export const Cart = observer(({ navigation }) => {
   const {
-    state: {cart},
+    state: { cart },
   } = ProductStore;
 
 
+  const handleCheckout = () => {
+    navigation.navigate('Checkout');
+  }
+
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       {/* <Header heading="Cart" navigation={navigation} /> */}
 
       {cart.length > 0 ? (
@@ -38,18 +40,18 @@ export const Cart = observer(({navigation}) => {
             {cart.map((item, i) => (
               <Item key={i} item={item} navigation={navigation} />
             ))}
-            <View style={{height: 80}}></View>
+            <View style={{ height: 80 }}></View>
           </ScrollView>
 
-          <TouchableOpacity
-            style={{...styles.primaryBtn, bottom: 0, position: 'absolute'}}>
-            <Text style={{color: '#fff', fontFamily: 'Poppins-Regular'}}>
-              Confirm Order
+          <TouchableOpacity onPress={handleCheckout}
+            style={{ ...styles.primaryBtn, bottom: 0, position: 'absolute' }}>
+            <Text style={{ color: '#fff', fontFamily: 'Poppins-Regular' }}>
+              Checkout
             </Text>
           </TouchableOpacity>
         </>
       ) : (
-        <View style={{justifyContent: 'center', flex: 1}}>
+        <View style={{ justifyContent: 'center', flex: 1 }}>
           <Image
             style={{
               width: 100,
@@ -96,31 +98,45 @@ export const Cart = observer(({navigation}) => {
   );
 });
 
-const Item = ({item, navigation}) => {
-  const {updateCartQuantity, setProduct} = ProductStore;
-  console.log(item)
+const Item = ({ item, navigation }) => {
+  const { updateCartQuantity, setProduct, setCheckedCart } = ProductStore;
+
+  const [checked, setChecked] = useState(item.isChecked);
+
+  const toggleCheckbox = () => {
+    setCheckedCart(item.id)
+    setChecked(!checked)
+  };
+
   return (
     <View style={styles.cartItem}>
+      <View>
+        <CheckBox
+          checked={checked}
+          onPress={toggleCheckbox}
+          iconType="material-community"
+          checkedIcon="checkbox-outline"
+          uncheckedIcon={'checkbox-blank-outline'}
+        />
+      </View>
       <Pressable
         onPress={() => {
           setProduct(item.product);
           navigation.navigate('Product');
         }}>
         <Image
-          style={{width: 100, height: 150, borderRadius: 5}}
+          style={{ width: 100, height: 150, borderRadius: 5 }}
           source={{
             uri: BASE_URL_ASSET + item.product.assets[0].filename
           }}
         />
       </Pressable>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <Text style={styles.cartName}>{item.product.name}</Text>
-
         <Text style={styles.cartPrice}>
-          Rp. {item.product.price * item.quantity ? numberFormat(item.product.price * item.quantity) : ''}
+          Rp. {item.product.real_price * item.quantity ? numberFormat(item.product.real_price * item.quantity) : ''}
         </Text>
       </View>
-
       <View style={styles.cartQuantity}>
         <Pressable
           style={{

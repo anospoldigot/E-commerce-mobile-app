@@ -5,23 +5,18 @@ import styles from '../styles';
 import {ProductStore} from '../store/product';
 import { numberFormat } from '../utils/currency';
 import { BASE_URL_ASSET } from '../store/url';
+import { observer } from 'mobx-react';
 
-export const ProductSlider = ({navigation}) => {
+export const ProductSlider = observer(({navigation}) => {
   const {
     state: { products },
     setProduct, getRandomProducts
   } = ProductStore;
 
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    console.log(products)
-    setData(products);
-  }, []);
 
   return (
     <ScrollView horizontal={true} style={styles.productSlider}>
-      {data.map((value, i) => (
+      {products.map((value, i) => (
         <Pressable
           onPress={() => {
             setProduct(value);
@@ -36,4 +31,4 @@ export const ProductSlider = ({navigation}) => {
       ))}
     </ScrollView>
   );
-};
+});

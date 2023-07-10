@@ -31,6 +31,7 @@ import {createNavigationContainerRef} from '@react-navigation/native';
 import Profile from '../screens/Profile';
 import Orders from '../screens/Orders';
 import Order from '../screens/Order';
+import Checkout from '../screens/Checkout';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -43,7 +44,7 @@ const navigationRef = createNavigationContainerRef();
 const menu = <Menu navigationRef={navigationRef} />;
 
 const HomeTabs = () => {
-  return (
+  return ( 
     <HomeStack.Navigator
       screenOptions={{
         headerShown: false,
@@ -53,6 +54,7 @@ const HomeTabs = () => {
       <Stack.Screen name="Product" component={Product} />
       <Stack.Screen name="Cart" component={Cart} />
       <Stack.Screen name="Category" component={Category} />
+      <Stack.Screen name="Checkout" component={Checkout} />
     </HomeStack.Navigator>
   );
 };
@@ -196,7 +198,7 @@ export const Navigator = observer(() => {
                 headerShown: false,
               }}
               initialRouteName="login">
-              {/* <Stack.Screen name="Onboarding" component={Tutorial} /> */}
+              <Stack.Screen name="Onboarding" component={Tutorial} />
               <Stack.Screen name="signup" component={Signup} />
               <Stack.Screen name="login" component={Login} />
             </Stack.Navigator>
