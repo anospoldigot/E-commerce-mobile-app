@@ -18,14 +18,14 @@ import {PrimaryColor, SecondaryColor} from '../styles/theme';
 import {faUser, faLock} from '@fortawesome/free-solid-svg-icons';
 import Svg, {Path} from 'react-native-svg';
 import axios from 'axios';
-import { BASE_URL } from '../store/url';
+import {  BASE_URL_API } from '../store/url';
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
   const onSubmit = async () => {
     try{
-      axios.defaults.baseURL = BASE_URL;
+      axios.defaults.baseURL = BASE_URL_API;
       const response = await axios.post('login', {email: email, password: password});
       AuthStore.login({user: response.data.data, token: response.data.token});
     }catch(err){

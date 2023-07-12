@@ -1,37 +1,38 @@
-import React, {useState} from 'react';
-import {View, Text, Image} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image } from 'react-native';
 import Dashboard from '../screens/Dashboard';
 import Login from '../screens/Login';
 import Signup from '../screens/Signup';
-import {Product} from '../screens/Product';
-import {Cart} from '../screens/Cart';
-import {Wishlist} from '../screens/Wishlist';
+import { Product } from '../screens/Product';
+import { Cart } from '../screens/Cart';
+import { Wishlist } from '../screens/Wishlist';
 import Tutorial from '../screens/Onboarding';
-import {Header} from '../components/Header';
+import { Header } from '../components/Header';
 import Menu from '../components/Menu';
 import SideMenu from '@chakrahq/react-native-side-menu';
-import {Category} from '../screens/Category';
+import { Category } from '../screens/Category';
 
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faHome, faUser, faHeart} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faHome, faUser, faHeart } from '@fortawesome/free-solid-svg-icons';
 
 import {
   faUser as faUserEmpty,
   faHeart as faHeartEmpty,
 } from '@fortawesome/free-regular-svg-icons';
 
-import {AuthStore} from '../store/auth';
-import {observer} from 'mobx-react';
+import { AuthStore } from '../store/auth';
+import { observer } from 'mobx-react';
 
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createNavigationContainerRef} from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNavigationContainerRef } from '@react-navigation/native';
 import Profile from '../screens/Profile';
 import Orders from '../screens/Orders';
 import Order from '../screens/Order';
 import Checkout from '../screens/Checkout';
+import { Pusher } from '@pusher/pusher-websocket-react-native';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -44,7 +45,7 @@ const navigationRef = createNavigationContainerRef();
 const menu = <Menu navigationRef={navigationRef} />;
 
 const HomeTabs = () => {
-  return ( 
+  return (
     <HomeStack.Navigator
       screenOptions={{
         headerShown: false,
@@ -88,7 +89,7 @@ const ProfileTabs = () => {
   );
 };
 
-const Tabs = ({navigation}) => {
+const Tabs = ({ navigation }) => {
   return (
     <>
       <Tab.Navigator
@@ -99,7 +100,7 @@ const Tabs = ({navigation}) => {
           name="Home"
           component={HomeTabs}
           options={{
-            tabBarLabel: ({focused, color, size}) => (
+            tabBarLabel: ({ focused, color, size }) => (
               <Text
                 style={{
                   color: '#000',
@@ -109,13 +110,13 @@ const Tabs = ({navigation}) => {
                 Home
               </Text>
             ),
-            tabBarIcon: ({focused}) => (
+            tabBarIcon: ({ focused }) => (
               <>
                 {focused ? (
                   <FontAwesomeIcon icon={faHome} />
                 ) : (
                   <Image
-                    style={{width: 20, height: 20}}
+                    style={{ width: 20, height: 20 }}
                     source={require('../../assets/icons/home.png')}
                   />
                 )}
@@ -127,7 +128,7 @@ const Tabs = ({navigation}) => {
           name="Wishlist"
           component={CartTabs}
           options={{
-            tabBarLabel: ({focused, color, size}) => (
+            tabBarLabel: ({ focused, color, size }) => (
               <Text
                 style={{
                   color: '#000',
@@ -137,7 +138,7 @@ const Tabs = ({navigation}) => {
                 Wishlist
               </Text>
             ),
-            tabBarIcon: ({focused}) => (
+            tabBarIcon: ({ focused }) => (
               <FontAwesomeIcon icon={focused ? faHeart : faHeartEmpty} />
             ),
           }}
@@ -146,7 +147,7 @@ const Tabs = ({navigation}) => {
           name="Profile"
           component={ProfileTabs}
           options={{
-            tabBarLabel: ({focused, color, size}) => (
+            tabBarLabel: ({ focused, color, size }) => (
               <Text
                 style={{
                   color: '#000',
@@ -156,7 +157,7 @@ const Tabs = ({navigation}) => {
                 Profile
               </Text>
             ),
-            tabBarIcon: ({focused}) => (
+            tabBarIcon: ({ focused }) => (
               <FontAwesomeIcon icon={focused ? faUser : faUserEmpty} />
             ),
           }}
@@ -170,7 +171,7 @@ export const Navigator = observer(() => {
   const [openMenu, setOpenMenu] = useState(false);
 
   const {
-    state: {isAuthenticated},
+    state: { isAuthenticated, user },
   } = AuthStore;
 
   return (

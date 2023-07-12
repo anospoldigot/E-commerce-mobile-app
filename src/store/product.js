@@ -61,6 +61,7 @@ class Product {
         value.isChecked = false;
         return value;
       });
+
       const product = await api.get('/products');
       this.state.products = product.data.data;
       const wishlist = await api.get('/wishlists');

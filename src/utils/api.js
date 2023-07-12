@@ -3,7 +3,7 @@ import { AuthStore } from '../store/auth';
 
 // Membuat instance Axios
 const api = axios.create({
-    baseURL: 'https://1eca-116-206-9-60.ngrok-free.app/api',
+    baseURL: 'https://71e9-116-206-9-25.ngrok-free.app/api/',
 });
 
 // Interceptor untuk penanganan kesalahan (error handling)
@@ -38,7 +38,7 @@ api.interceptors.response.use(
 
 api.interceptors.request.use(
     config => {
-      const token = AuthStore.token; // Ambil token akses dari penyimpanan lokal atau state aplikasi
+      const token = AuthStore.state.token; // Ambil token akses dari penyimpanan lokal atau state aplikasi
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }

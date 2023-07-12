@@ -32,8 +32,8 @@ class Auth {
 
   login = async data => {
     try {
-      this.user   = data.user;
-      this.token  = data.token;
+      this.state.user   = data.user;
+      this.state.token  = data.token;
       this.state.isAuthenticated = true;
       this.createToast('Logged in successfully');
     } catch (err) {

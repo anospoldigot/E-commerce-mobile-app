@@ -1,8 +1,8 @@
-import {View, Text, Pressable, Image} from 'react-native';
+import { View, Text, Pressable, Image } from 'react-native';
 import React from 'react';
 import styles from '../styles';
 
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {
   faBoxes,
   faCartShopping,
@@ -17,20 +17,30 @@ import {
   faReceipt,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import api from '../utils/api';
+import { AuthStore } from '../store/auth';
+import { observer } from 'mobx-react';
+import {  BASE_URL_ASSET } from '../store/url';
 
-const Profile = ({navigation}) => {
+const Profile = observer(({ navigation }) => {
+
+  const { state : {user}} = AuthStore
+
+  console.log(BASE_URL_ASSET + user.profile)
+
   return (
     <View>
       <View style={styles.profile}>
         <Image
-          style={{width: 150, height: 150}}
+          style={{ width: 150, height: 150 }}
           source={{
-            uri: 'https://dl.memuplay.com/new_market/img/com.vicman.newprofilepic.icon.2022-06-07-21-33-07.png',
+            uri: BASE_URL_ASSET  + user.profile,
           }}
         />
-        <Text style={styles.profileName}>Musabbiha Noor</Text>
+        <Text style={styles.profileName}>{user.name}</Text>
       </View>
-
       <View style={styles.menuOptions}>
         <Pressable style={styles.menuOption}>
           <FontAwesomeIcon color="#ccc" icon={faUser} />
@@ -50,7 +60,7 @@ const Profile = ({navigation}) => {
           <FontAwesomeIcon color="#ccc" icon={faChevronRight} />
         </Pressable>
 
-        <Pressable style={styles.menuOption}>
+        <Pressable style={styles.menuOption} onPress={() => navigation.navigate('Orders')}>
           <FontAwesomeIcon color="#ccc" icon={faReceipt} />
           <Text style={styles.menuText}>Orders</Text>
           <FontAwesomeIcon color="#ccc" icon={faChevronRight} />
@@ -64,6 +74,6 @@ const Profile = ({navigation}) => {
       </View>
     </View>
   );
-};
+})
 
 export default Profile;
