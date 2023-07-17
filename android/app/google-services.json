@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "778109261856",
+    "project_id": "ecommerce-3fdce",
+    "storage_bucket": "ecommerce-3fdce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:778109261856:android:407d56663300face61c445",
+        "android_client_info": {
+          "package_name": "com.bastusgeming.shop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "778109261856-sb3dlp7nqi9s3otgjidbb8nku7e94i3n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bastusgeming.shop",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "778109261856-sbf631rfrcrndsh71ke6stcq2q4ccgdm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqAdJ81n9d8S58dnod6ou0LGRM2_h0Lw4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "778109261856-sbf631rfrcrndsh71ke6stcq2q4ccgdm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

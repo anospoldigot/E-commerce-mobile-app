@@ -1,4 +1,4 @@
-package com.guzel.newarchitecture;
+package com.bastusgeming.shop.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.guzel.BuildConfig;
-import com.guzel.newarchitecture.components.MainComponentsRegistry;
-import com.guzel.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.bastusgeming.shop.BuildConfig;
+import com.bastusgeming.shop.newarchitecture.components.MainComponentsRegistry;
+import com.bastusgeming.shop.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

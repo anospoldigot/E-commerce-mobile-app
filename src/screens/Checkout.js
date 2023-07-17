@@ -13,6 +13,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { PrimaryColor } from '../styles/theme';
 import styles from '../styles';
 import { ToastAndroid } from 'react-native';
+import MaterialButton from '../components/Button';
 
 const Checkout = observer(({ navigation }) => {
   const { getCheckedCart } = ProductStore;
@@ -264,6 +265,7 @@ const Checkout = observer(({ navigation }) => {
         }} >
           <Text style={{ ...styles.btnTextPrimary, color: '#fff' }}>Pay</Text>
         </TouchableOpacity>
+        <MaterialButton title={'Pay'}></MaterialButton>
       </View>
     </ScrollView>
   )

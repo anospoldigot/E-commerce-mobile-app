@@ -33,6 +33,8 @@ import Orders from '../screens/Orders';
 import Order from '../screens/Order';
 import Checkout from '../screens/Checkout';
 import { Pusher } from '@pusher/pusher-websocket-react-native';
+import websocket from '../utils/websocket';
+import NotifService from '../../NotifService';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -169,10 +171,30 @@ const Tabs = ({ navigation }) => {
 
 export const Navigator = observer(() => {
   const [openMenu, setOpenMenu] = useState(false);
+  const [registerToken, setRegisterToken] = useState('');
+  const [fcmRegistered, setFcmRegistered] = useState(false);
+  const notif = new NotifService(onRegister, onNotif)
+
+  const onRegister = (token) => { 
+    setRegisterToken(token.token)
+    setFcmRegistered(true)
+  }
+
+  const onNotif = (notif) => {
+    Alert.alert(notif.title, notif.message);
+  }
+
+  const handlePerm = (perms) => {
+    Alert.alert('Permissions', JSON.stringify(perms));
+  }
 
   const {
-    state: { isAuthenticated, user },
+    state: { isAuthenticated, user, token },
   } = AuthStore;
+
+  useEffect(() => {
+    websocket(isAuthenticated, user, notif.localNotif);
+  }, [token])
 
   return (
     <>
