@@ -125,10 +125,11 @@ const websocket = async (isAuthenticated, user, notification) => {
         await pusher.subscribe({
             channelName: "private-App.Models.User.3",
             onEvent: (event) => {
-                console.log(`Event received: ${event}`);
+                const data = JSON.parse(event.data);
+                console.log(data);
                 notification({
-                    title: event.data.subject,
-                    message: event.data.content
+                    title: data.subject,
+                    message: data.content
                 });
             }
         });

@@ -21,7 +21,6 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import { GoogleAPI } from 'googleapis';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -30,6 +29,7 @@ const Login = ({ navigation }) => {
   const [userInfo, setuserInfo] = useState([]);
 
   useEffect(() => {
+    axios.defaults.baseURL = BASE_URL_API;
     GoogleSignin.configure({
       scopes: ['email'], // what API you want to access on behalf of the user, default is email and profile
       webClientId:
@@ -41,7 +41,6 @@ const Login = ({ navigation }) => {
 
   const onSubmit = async () => {
     try {
-      axios.defaults.baseURL = BASE_URL_API;
       const response = await axios.post('login', { email: email, password: password });
       AuthStore.login({ user: response.data.data, token: response.data.token });
     } catch (err) {
@@ -53,20 +52,11 @@ const Login = ({ navigation }) => {
   const _signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const { accessToken, idToken } = await GoogleSignin.signIn();
-      const client = new GoogleAPI();
-      
-      await client.init({ clientId: '778109261856-sbf631rfrcrndsh71ke6stcq2q4ccgdm.apps.googleusercontent.com' });
-      // Panggil Google API untuk mendapatkan data pengguna
-      const res = await client.people.get({
-        access_token: accessToken,
-        resourceName: 'people/me',
-        personFields: 'names,email,photos',
-      });
-
-      // Dapatkan data pengguna dari respons API
-      const { data } = res;
-      console.log('User data:', data);
+      // const { accessToken, idToken } = await GoogleSignin.signIn();
+      const userInfo = await GoogleSignin.signIn();
+      console.log("userinfo", userInfo)
+      const response = await axios.post('google/login', userInfo.user);
+      AuthStore.login({ user: response.data.data, token: response.data.token });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
