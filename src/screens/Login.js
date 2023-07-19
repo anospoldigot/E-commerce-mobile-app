@@ -21,19 +21,20 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import MaterialButton from '../components/Button';
+import { clientId } from '../store/google';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loggedIn, setloggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [userInfo, setuserInfo] = useState([]);
 
   useEffect(() => {
     axios.defaults.baseURL = BASE_URL_API;
     GoogleSignin.configure({
       scopes: ['email'], // what API you want to access on behalf of the user, default is email and profile
-      webClientId:
-        '778109261856-sbf631rfrcrndsh71ke6stcq2q4ccgdm.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      webClientId: clientId, // client ID of type WEB for your server (needed to verify user ID and offline access)
       offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
     });
   }, [])
@@ -49,10 +50,9 @@ const Login = ({ navigation }) => {
     }
   };
 
-  const _signIn = async () => {
+  const googleeSignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      // const { accessToken, idToken } = await GoogleSignin.signIn();
       const userInfo = await GoogleSignin.signIn();
       console.log("userinfo", userInfo)
       const response = await axios.post('google/login', userInfo.user);
@@ -79,7 +79,6 @@ const Login = ({ navigation }) => {
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
-      setloggedIn(false);
       setuserInfo([]);
     } catch (error) {
       console.error(error);
@@ -135,13 +134,12 @@ const Login = ({ navigation }) => {
           </Text>
         </Pressable>
 
-        <TouchableOpacity style={styles.primaryBtn} onPress={() => onSubmit()}>
-          <Text style={{ ...styles.btnTextPrimary, color: '#fff' }}>Submit</Text>
-        </TouchableOpacity>
+        <MaterialButton onPress={onSubmit} title={'Login'} style={{ marginBottom: 50 }} />
         <GoogleSigninButton
           size={GoogleSigninButton.Size.Wide}
           color={GoogleSigninButton.Color.Dark}
-          onPress={_signIn}
+          onPress={googleeSignIn}
+          style={{ width: '100%' }}
         // disabled={state.isSigninInProgress}
         />
       </ScrollView>

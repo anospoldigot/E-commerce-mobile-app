@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
 
   form: {
     width: '100%',
-    backgroundColor: '#eee',
     padding: 20,
     flex: 1,
   },
@@ -36,7 +35,7 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
     borderWidth: 1,
     marginBottom: 10,
-    backgroundColor: '#fff',
+    backgroundColor: '#eee',
     borderRadius: 5,
     paddingLeft: 10,
   },
@@ -227,6 +226,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 50,
     marginBottom: 20,
+    elevation: 10,
+    shadowColor: PrimaryColor,
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
   },
 
   secondaryBtn: {

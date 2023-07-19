@@ -24,12 +24,14 @@ const Order = () => {
     items: [],
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const initializeState = async () => {
     try {
+      setIsLoading(true)
       const response = await api.get(`orders/${orderId}`)
       setOrder(response.data.data)
-
-      console.log(response.data.data)
+      setIsLoading(false)
     } catch (error) {
 
     }
@@ -41,6 +43,7 @@ const Order = () => {
   }
 
   useEffect(() => {
+    
     initializeState()
   }, [])
 

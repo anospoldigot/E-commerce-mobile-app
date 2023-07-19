@@ -5,16 +5,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 import api from '../utils/api';
+import { Skeleton } from '@rneui/themed';
 
 const Orders = ({ navigation }) => {
   const [selected, setSelected] = useState('ongoing');
   const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const initializeState = async () => {
     try {
+      setIsLoading(true)
       const response = await api.get('orders');
       setOrders(response.data.data)
-      console.log(response)
+      setIsLoading(false)
     } catch (error) {
 
     }
@@ -58,24 +61,30 @@ const Orders = ({ navigation }) => {
       </View>
       <ScrollView style={{ padding: 20 }}>
         {
-          orders.map(order => {
-            return (
-              <Pressable
-              key={order.id}
-                onPress={() => navigation.navigate('Order', { orderId: order.id })}
-                style={styles.orderItem}>
-                <View>
-                  <Text style={styles.orderNo}>{order.invoice_number}</Text>
-                  <Text style={styles.orderItemCount}>{order.items.length} items</Text>
-                </View>
-                <View
-                  style={{ alignItems: 'flex-end', justifyContent: 'space-between' }}>
-                  <FontAwesomeIcon icon={faChevronDown} />
-                  <Text style={styles.orderDate}>Date: { order.created_at }</Text>
-                </View>
-              </Pressable>
-            )
-          })
+          isLoading ?
+            <View>
+              <Skeleton animation="pulse" width={'100%'} height={50} style={{ marginBottom: 15 }} />
+              <Skeleton animation="pulse" width={'100%'} height={50} style={{ marginBottom: 15 }} />
+              <Skeleton animation="pulse" width={'100%'} height={50} style={{ marginBottom: 15 }} />
+            </View> :
+            orders.map(order => {
+              return (
+                <Pressable
+                  key={order.id}
+                  onPress={() => navigation.navigate('Order', { orderId: order.id })}
+                  style={styles.orderItem}>
+                  <View>
+                    <Text style={styles.orderNo}>{order.invoice_number}</Text>
+                    <Text style={styles.orderItemCount}>{order.items.length} items</Text>
+                  </View>
+                  <View
+                    style={{ alignItems: 'flex-end', justifyContent: 'space-between' }}>
+                    <FontAwesomeIcon icon={faChevronDown} />
+                    <Text style={styles.orderDate}>Date: {order.created_at}</Text>
+                  </View>
+                </Pressable>
+              )
+            })
         }
 
         {/* <Pressable
