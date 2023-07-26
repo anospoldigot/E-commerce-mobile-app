@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-import {ToastAndroid} from 'react-native';
+import { ToastAndroid } from 'react-native';
 
-import {makeObservable, observable, action, runInAction} from 'mobx';
-import {BASE_URL} from './url';
+import { makeObservable, observable, action, runInAction } from 'mobx';
+import { BASE_URL } from './url';
 
-import {categories} from '../data/categories';
-import {products} from '../data/products';
-import {cart} from '../data/cart';
-import {wishlist} from '../data/wishlist';
+import { categories } from '../data/categories';
+import { products } from '../data/products';
+import { cart } from '../data/cart';
+import { wishlist } from '../data/wishlist';
 import api from '../utils/api';
 
 class Product {
@@ -40,7 +40,7 @@ class Product {
       setCheckedCart: action,
       getCheckedCart: action,
     });
-    
+
     this.initializeState();
   }
 
@@ -57,7 +57,7 @@ class Product {
   initializeState = async () => {
     try {
       const cart = await api.get('/carts');
-      this.state.cart = cart.data.data.map(value =>{
+      this.state.cart = cart.data.data.map(value => {
         value.isChecked = false;
         return value;
       });
@@ -102,9 +102,10 @@ class Product {
   };
 
   getSearchedProducts = text => {
+    console.log(this.state.products)
     this.state.searchedProducts = this.shuffle(
-      this.state.allProducts.filter(x =>
-        x.name.toLowerCase().includes(text.toLowerCase()),
+      this.state.products.filter(x =>
+        x.title.toLowerCase().includes(text.toLowerCase()),
       ),
     );
   };
@@ -123,7 +124,7 @@ class Product {
 
   setCheckedCart = id => {
     this.state.cart = this.state.cart.map(value => {
-      if(value.id == id) value.isChecked = !value.isChecked;
+      if (value.id == id) value.isChecked = !value.isChecked;
 
       return value;
     })
@@ -133,12 +134,19 @@ class Product {
     return this.state.cart.filter(value => value.isChecked)
   }
 
-  addToCart = product => {
-    if (this.state.cart.find(x => x.product.id === product.id)) {
-      this.createToast('Already in cart');
-    } else {
-      this.state.cart = [...this.state.cart, {product: product, quantity: 1}];
-      this.createToast('Added to cart');
+  addToCart = async product => {
+    try {
+      console.log(product)
+      await api.post('carts', product);
+      if (this.state.cart.find(x => x.product.id === product.id)) {
+        this.createToast('Already in cart');
+      } else {
+        this.state.cart = [...this.state.cart, { product: product, quantity: 1 }];
+        this.createToast('Added to cart');
+      }
+    } catch (error) {
+      console.error(error)
+      alert(error)
     }
   };
 
@@ -147,7 +155,7 @@ class Product {
       this.state.cart = this.state.cart.filter(x => x.product.id !== id);
     } else {
       this.state.cart = this.state.cart.map(x =>
-        x.product.id === id ? {...x, quantity: quantity} : x,
+        x.product.id === id ? { ...x, quantity: quantity } : x,
       );
     }
   };

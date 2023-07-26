@@ -9,7 +9,7 @@ import { Picker } from '@react-native-picker/picker';
 import { numberFormat } from '../utils/currency';
 import { observer } from 'mobx-react';
 import { Button } from '@rneui/themed';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { PrimaryColor } from '../styles/theme';
 import styles from '../styles';
 import { ToastAndroid } from 'react-native';
@@ -38,6 +38,7 @@ const Checkout = observer(({ navigation }) => {
   const [paymentName, setPaymentName] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState(0);
 
+  const [note, setNote] = useState(''); 
 
   const initializeState = async () => {
     try {
@@ -97,23 +98,24 @@ const Checkout = observer(({ navigation }) => {
   const handlePay = async () => {
     try {
       const payload = {
-        totalAmount   : total,
-        subtotal      : subtotal,
-        shippingCost  : shippingCost,
-        voucherAmount : voucherAmount,
-        ppnAmount     : ppnAmount,
-        paymentName   : paymentName,
-        paymentMethod : paymentMethod,
-        paymentFee    : paymentFee,
-        addressId     : selectedAddress,
-        products      : items.map(item => {
+        totalAmount: total,
+        subtotal: subtotal,
+        shippingCost: shippingCost,
+        voucherAmount: voucherAmount,
+        ppnAmount: ppnAmount,
+        paymentName: paymentName,
+        paymentMethod: paymentMethod,
+        paymentFee: paymentFee,
+        addressId: selectedAddress,
+        note,
+        products: items.map(item => {
           return {
-            id        : item.id,
-            title     : item.title,
-            sku       : item.sku,
-            price     : item.price,
+            id: item.id,
+            title: item.title,
+            sku: item.sku,
+            price: item.price,
             real_price: item.real_price,
-            quantity  : item.quantity,
+            quantity: item.quantity,
           }
         }),
       }
@@ -130,7 +132,7 @@ const Checkout = observer(({ navigation }) => {
   useEffect(() => {
     const carts = getCheckedCart();
     setItems(carts.map((value) => {
-      const result    =  value.product;
+      const result = value.product;
       result.quantity = value.quantity
 
       return result;
@@ -169,6 +171,14 @@ const Checkout = observer(({ navigation }) => {
               )
             })
           }
+          <TextInput
+            style={style.noteInput}
+            multiline
+            placeholder="Masukkan catatan Anda di sini..."
+            value={note}
+            onChangeText={(value) => setNote(value)}
+            textAlignVertical="top"
+          />
         </View>
         <View style={{ marginBottom: 20 }}>
           <Text>
@@ -260,12 +270,7 @@ const Checkout = observer(({ navigation }) => {
             </Text>
           </View>
         </View>
-        <TouchableOpacity onPress={handlePay} style={{
-          ...styles.primaryBtn, width: '100%'
-        }} >
-          <Text style={{ ...styles.btnTextPrimary, color: '#fff' }}>Pay</Text>
-        </TouchableOpacity>
-        <MaterialButton title={'Pay'}></MaterialButton>
+        <MaterialButton title={'Pay'} onPress={handlePay}></MaterialButton>
       </View>
     </ScrollView>
   )
@@ -282,7 +287,10 @@ const style = StyleSheet.create({
     fontWeight: '700',
     marginBottom: 20,
     textTransform: 'uppercase'
-  }
+  },
+  noteInput: {
+    height: 100,
+  },
 
 })
 

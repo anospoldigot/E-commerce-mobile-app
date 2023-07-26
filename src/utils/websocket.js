@@ -5,7 +5,7 @@ import {
     PusherEvent,
 } from '@pusher/pusher-websocket-react-native';
 import { Notifications } from 'react-native-notifications';
-import { BASE_URL } from '../store/url';
+import { BASE_URL, BASE_URL_API } from '../store/url';
 import api from './api';
 import axios from 'axios';
 import { AuthStore } from '../store/auth';
@@ -85,7 +85,7 @@ const onAuthorizer = async (channelName, socketId) => {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
         }
 
-        const response = await axios.post(BASE_URL + 'broadcasting/auth', {
+        const response = await axios.post(BASE_URL_API + 'broadcasting/auth', {
             socket_id: socketId,
             channel_name: channelName,
         });

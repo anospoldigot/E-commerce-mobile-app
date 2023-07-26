@@ -4,6 +4,8 @@ import React, {useEffect, useState} from 'react';
 import {ProductStore} from '../store/product';
 import styles from '../styles';
 import {observer} from 'mobx-react';
+import { BASE_URL, BASE_URL_ASSET } from '../store/url';
+import { numberFormat } from '../utils/currency';
 
 export const ProductGrid = observer(({searchText, navigation, byCategory}) => {
   const {
@@ -36,9 +38,9 @@ export const ProductGrid = observer(({searchText, navigation, byCategory}) => {
             }}
             key={i}
             style={styles.sliderItem}>
-            <Image style={styles.sliderImg} source={{uri: x.imgs[0]}} />
-            <Text style={styles.sliderText}>{x.name}</Text>
-            <Text style={styles.sliderPrice}>${x.price}</Text>
+            <Image style={styles.sliderImg} source={{uri: BASE_URL_ASSET + x.assets[0].filename}} />
+            <Text style={styles.sliderText}>{x.title}</Text>
+            <Text style={styles.sliderPrice}>Rp. {numberFormat(x.real_price)}</Text>
           </Pressable>
         ))}
         <View style={{height: 350}}></View>

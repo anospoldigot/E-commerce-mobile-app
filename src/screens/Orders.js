@@ -27,7 +27,11 @@ const Orders = ({ navigation }) => {
     initializeState()
   }, [])
 
+  const [index, setIndex] = useState(0);
+  
+
   return (
+    
     <View>
       <View style={styles.switch}>
         <Pressable

@@ -34,6 +34,17 @@ const Dashboard = ({navigation}) => {
     return true;
   };
 
+  const handleFocusSearch = () => {
+    setSearching(true)
+    setSearched(true)
+  }
+
+  const handleBlurSearch = () => {
+    setSearching(false)
+    setSearched(false)
+  }
+
+
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
     return () => {
@@ -51,8 +62,8 @@ const Dashboard = ({navigation}) => {
           value={searchText}
           onChangeText={e => setSearchText(e)}
           style={searching ? styles.searchInputFocused : styles.searchInput}
-          onFocus={() => setSearching(true)}
-          onBlur={() => setSearching(false)}
+          onFocus={handleFocusSearch}
+          onBlur={handleBlurSearch}
           selectionColor="#000"
         />
         <TouchableOpacity
@@ -67,7 +78,7 @@ const Dashboard = ({navigation}) => {
       <ScrollView style={{paddingTop: 70}}>
         {/* <Header heading="" navigation={navigation} /> */}
 
-        {searched ? (
+        {searched &&  searchText != "" ? (
           <>
             <ProductGrid navigation={navigation} searchText={searchText} />
           </>
