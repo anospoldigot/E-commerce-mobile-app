@@ -30,6 +30,14 @@ class Auth {
     );
   };
 
+  initializeState = async () => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
+
   login = async data => {
     try {
       this.state.user   = data.user;
